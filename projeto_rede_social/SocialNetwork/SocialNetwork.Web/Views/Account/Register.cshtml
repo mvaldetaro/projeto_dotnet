@@ -1,0 +1,44 @@
+﻿@model SocialNetwork.Web.Models.Account.RegisterViewModel
+@{
+    ViewBag.Title = "Cadastro";
+}
+
+
+<div class="row">
+    <div class="col-md-8">
+        <h1>Hortagram</h1>
+        <h2>Home Gardens Social Network</h2>
+        <p>Cadastre-se para ver fotos, vídeos e textos dos seu amigos hortaleiros.</p>
+    </div>
+    <div class="col-md-4">
+        <div class="box login">
+            <h2>@ViewBag.Title</h2>
+            <p>Preencha os campos abaixo:</p>
+
+            @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                
+                @Html.ValidationSummary("", new { @class = "text-danger" })
+                
+                <div class="form-group">
+                        @Html.TextBoxFor(m => m.Email, new { type = "email", placeholder = "Email", @class = "form-control" })
+                </div>
+
+                <div class="form-group">
+                        @Html.TextBoxFor(m => m.Password, new { type = "password", placeholder = "Senha", @class = "form-control" })
+                </div>
+
+                <div class="form-group">
+                        @Html.TextBoxFor(m => m.ConfirmPassword, new { type = "password", placeholder = "Redigite a Senha", @class = "form-control" })
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary btn-block" value="Cadastrar" />
+                </div>
+                <hr />
+                <p class="text-center"> Tem uma conta? @Html.ActionLink("Faça Login", "Login")</p>
+            }
+        </div>
+    </div>
+</div>

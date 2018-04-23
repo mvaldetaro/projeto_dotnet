@@ -1,0 +1,11 @@
+﻿@model SocialNetwork.Web.ViewModel.User
+@{
+    ViewBag.Title = "Timeline";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>user_email: @Model.Email</p>
+
+<p>@Html.ActionLink("Logout", "Logout", "Account")</p>
+

@@ -1,0 +1,38 @@
+﻿body {
+    padding-bottom: 20px;
+    background-color: #FAFAFA !important;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding: 40px 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    
+}
+
+.box {
+    background-color: #fff;
+    border: 1px solid #e6e6e6;
+    border-radius: 1px;
+    margin: 0 0 10px;
+    padding: 16px;
+}
+
+.login h2 {
+
+}
+
+.bg-garden {
+    background: #00F260; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #0575E6, #00F260); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #0575E6, #00F260); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.navbar-text {
+   color: rgba(255,255,255,.87) !important;
+}

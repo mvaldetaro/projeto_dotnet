@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hortagram - Home Gardens: @ViewBag.Title </title>
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-garden">
+        <div class="container">
+            <span class="navbar-brand mb-0 h1">Hortagram</span>
+            <div>
+                @if (@Session["AccessToken"] != null)
+    {
+                <span class="navbar-text">
+                    Olá @Session["Email"]
+                </span>
+                @Html.ActionLink("Logout", "Logout", "Account", new { }, new { @class = "btn btn-outline-light" })
+}
+            </div>
+        </div>
+        
+    </nav>
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Hortagram: Home Gardens Social Network</p>
+        </footer>
+    </div>
+
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+</body>
+</html>
