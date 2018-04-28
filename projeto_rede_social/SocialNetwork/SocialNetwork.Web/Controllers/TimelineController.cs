@@ -10,19 +10,17 @@ using SocialNetwork.Web.Helpers;
 
 namespace SocialNetwork.Web.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class TimelineController : Controller
     {
-
-        private TokenHelper _tokenHelper;
         // GET: Timeline
-        public ActionResult Index(LoginViewModel model)
+        public ActionResult Index()
         {
             if(Session["AccessToken"] != null)
-            {
-                User user_logado = new User();
-                user_logado.Email = model.Email;
-                return View(user_logado);
+            {   
+                User user = new User();
+                user.Email = (string)Session["user_email"];
+                return View(user);
             } else
             {
                 return RedirectToAction("Login", "Account");

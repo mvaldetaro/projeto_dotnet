@@ -88,9 +88,9 @@ namespace SocialNetwork.Web.Controllers
                         var tokenData = JObject.Parse(responseContent);
                         _tokenHelper.AccessToken = tokenData["access_token"];
 
-                        Session["Email"] = model.Email;
+                        Session["user_email"] = model.Email;
 
-                        return RedirectToAction("Index", "Timeline", model);
+                        return RedirectToAction("Index", "Timeline");
                     } else
                     {
                         ModelState.AddModelError("", "");
