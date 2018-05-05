@@ -91,6 +91,12 @@ namespace SocialNetwork.Web.Controllers
                         var tokenData = JObject.Parse(responseContent);
                         _tokenHelper.AccessToken = tokenData["access_token"];
 
+
+                        // Get User
+
+
+
+
                         Session["user_email"] = model.Email;
 
                         return RedirectToAction("Index", "Timeline");
@@ -109,6 +115,7 @@ namespace SocialNetwork.Web.Controllers
             Session.Clear();
             return RedirectToAction("Login", "Account");
         }
+
 
         protected override void Dispose(bool disposing)
         {

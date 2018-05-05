@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SocialNetwork.Web.ViewModel
 {
-    public class Pessoa : User
+    public class Pessoa : AspNetUser
     {
         public string uid { get; set; }
         public string nome { get; set; }
