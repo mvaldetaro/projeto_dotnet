@@ -85,6 +85,9 @@ namespace SocialNetwork.Web.Controllers
                     if (response.IsSuccessStatusCode)
                     {
                         var responseContent = await response.Content.ReadAsStringAsync();
+
+                        Session["responseContent"] = responseContent;
+
                         var tokenData = JObject.Parse(responseContent);
                         _tokenHelper.AccessToken = tokenData["access_token"];
 
@@ -100,7 +103,7 @@ namespace SocialNetwork.Web.Controllers
             return View(model);
         }
 
-        //GET: Account/Login
+        //GET: Account/Logout
         public ActionResult Logout()
         {
             Session.Clear();

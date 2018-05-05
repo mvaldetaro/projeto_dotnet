@@ -20,6 +20,7 @@ namespace SocialNetwork.Web.Controllers
             {   
                 User user = new User();
                 user.Email = (string)Session["user_email"];
+                ViewBag.response = Session["responseContent"];
                 return View(user);
             } else
             {
