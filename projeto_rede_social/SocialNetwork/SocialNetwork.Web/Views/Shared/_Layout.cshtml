@@ -16,7 +16,7 @@
                 @if (@Session["AccessToken"] != null)
     {
                 <span class="navbar-text">
-                    Olá @Session["user_email"]
+                    Olá <a href="/User/Account">@Session["user_email"]</a> 
                 </span>
                 @Html.ActionLink("Logout", "Logout", "Account", new { }, new { @class = "btn btn-outline-light" })
 }

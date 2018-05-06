@@ -18,7 +18,8 @@ namespace SocialNetwork.Web.Controllers
         {
             if(Session["AccessToken"] != null)
             {   
-                User user = new User();
+                Pessoa user = new Pessoa();
+                user.uid = (string)Session["user_uid"];
                 user.Email = (string)Session["user_email"];
                 return View(user);
             } else

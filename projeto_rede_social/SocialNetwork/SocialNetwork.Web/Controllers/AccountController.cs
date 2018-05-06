@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using SocialNetwork.Web.Bussiness;
 
 namespace SocialNetwork.Web.Controllers
 {
@@ -85,10 +86,16 @@ namespace SocialNetwork.Web.Controllers
                     if (response.IsSuccessStatusCode)
                     {
                         var responseContent = await response.Content.ReadAsStringAsync();
+
+                        Session["responseContent"] = responseContent;
+
                         var tokenData = JObject.Parse(responseContent);
                         _tokenHelper.AccessToken = tokenData["access_token"];
 
-                        Session["user_email"] = model.Email;
+                        var user_logged = UsersActions.GetUserFromApi(model.Email);
+
+                        Session["user_uid"] = user_logged.uid;
+                        Session["user_email"] = user_logged.Email;
 
                         return RedirectToAction("Index", "Timeline");
                     } else
@@ -100,12 +107,13 @@ namespace SocialNetwork.Web.Controllers
             return View(model);
         }
 
-        //GET: Account/Login
+        //GET: Account/Logout
         public ActionResult Logout()
         {
             Session.Clear();
             return RedirectToAction("Login", "Account");
         }
+
 
         protected override void Dispose(bool disposing)
         {
