@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using SocialNetwork.Web.Bussiness;
 
 namespace SocialNetwork.Web.Controllers
 {
@@ -91,13 +92,10 @@ namespace SocialNetwork.Web.Controllers
                         var tokenData = JObject.Parse(responseContent);
                         _tokenHelper.AccessToken = tokenData["access_token"];
 
+                        var user_logged = UsersActions.GetUserFromApi(model.Email);
 
-                        // Get User
-
-
-
-
-                        Session["user_email"] = model.Email;
+                        Session["user_uid"] = user_logged.uid;
+                        Session["user_email"] = user_logged.Email;
 
                         return RedirectToAction("Index", "Timeline");
                     } else

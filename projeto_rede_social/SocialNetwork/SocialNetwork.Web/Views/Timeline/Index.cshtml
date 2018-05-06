@@ -1,13 +1,13 @@
-﻿@model SocialNetwork.Web.ViewModel.User
+﻿@model SocialNetwork.Web.ViewModel.Pessoa
 @{
     ViewBag.Title = "Timeline";
 }
 
 <h2>@ViewBag.Title</h2>
 
+<p>user_uid: @Model.uid</p>
 <p>user_email: @Model.Email</p>
 
-@ViewBag.response
 
 <p>@Html.ActionLink("Logout", "Logout", "Account")</p>
 

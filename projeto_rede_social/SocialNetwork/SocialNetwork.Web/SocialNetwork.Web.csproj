@@ -138,6 +138,8 @@
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\popper-utils.js" />
     <Content Include="Scripts\popper-utils.min.js" />
@@ -152,6 +154,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Attributes\AuthenticationAttribute.cs" />
+    <Compile Include="BussinessModel\UserAccountModel.cs" />
     <Compile Include="Bussiness\UsersActions.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\TimelineController.cs" />
@@ -187,6 +190,7 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Timeline\Index.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\User\Account.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

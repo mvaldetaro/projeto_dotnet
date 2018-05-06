@@ -4,50 +4,75 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using SocialNetwork.Web.Bussiness;
+using SocialNetwork.Web.ViewModel;
 
 namespace SocialNetwork.Web.Controllers
 {
     public class UserController : Controller
     {
-        // GET: User
+        // GET: User 
+        // [TESTE] Remover antes de finalizar
+
         public ActionResult Index()
         {
-            
             return View(UsersActions.GetAllAspNetUsersFromApi());
         }
 
-        // GET: User/Details/5
-        public ActionResult Details(int id)
+        // GET: User/Account
+        public ActionResult Account()
         {
-            return View();
+
+            if (Session["AccessToken"] != null)
+            {
+                if(UsersActions.VerifyExistUserAccount((string)Session["user_uid"]) == true) {
+                    ViewBag.VerifyExistUserAccount = "TRUE";
+                    return View(UsersActions.GetUserFromApiByUid((string)Session["user_uid"]));
+                } else
+                {
+                    ViewBag.VerifyExistUserAccount = "FALSE";
+                    return View(UsersActions.GetUserFromApiByUid((string)Session["user_uid"]));
+                }
+
+                
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
         }
 
-        // GET: User/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: User/Create
+        // POST: User/CreateOrUpdate
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateOrUpdate(Pessoa pessoa)
         {
             try
             {
-                // TODO: Add insert logic here
+                if (pessoa.uid != "") { 
+                    if (UsersActions.VerifyExistUserAccount(pessoa.uid) == true)
+                    {
+                        //UPDATE
+                        UsersActions.UpdateAccountPessoa(pessoa);
+                    }
+                    else
+                    {
+                        //CREATE
+                        if (ModelState.IsValid)
+                        {
+                            UsersActions.CreateAccountPessoa(pessoa);
+                        }
 
-                return RedirectToAction("Index");
+                        
+                    }
+                }
+
+                return RedirectToAction("Account");
             }
             catch
             {
                 return View();
             }
-        }
-
-        // GET: User/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
         }
 
         // POST: User/Edit/5
