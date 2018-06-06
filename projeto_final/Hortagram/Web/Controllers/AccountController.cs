@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Web.Models;
+using Web.Business;
 
 namespace Web.Controllers
 {
@@ -28,7 +29,7 @@ namespace Web.Controllers
             {
                 using (var client = new HttpClient())
                 {
-                    client.BaseAddress = new Uri("http://localhost:63132");
+                    client.BaseAddress = new Uri(Const.AuthUrl);
 
                     var response = await client.PostAsJsonAsync("api/Account/Register", model);
 
@@ -68,7 +69,7 @@ namespace Web.Controllers
 
                 using (var client = new HttpClient())
                 {
-                    client.BaseAddress = new Uri("http://localhost:63132");
+                    client.BaseAddress = new Uri(Const.AuthUrl);
 
                     using (var requestContent = new FormUrlEncodedContent(data))
                     {
