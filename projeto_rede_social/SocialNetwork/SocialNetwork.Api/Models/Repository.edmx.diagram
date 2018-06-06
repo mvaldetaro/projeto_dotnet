@@ -12,7 +12,7 @@
         <EntityTypeShape EntityType="ApplicationDatabaseModel.Post" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ApplicationDatabaseModel.Tagged_Post" Width="1.5" PointX="4.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ApplicationDatabaseModel.Tag" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ApplicationDatabaseModel.User" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ApplicationDatabaseModel.User" Width="1.5" PointX="0.75" PointY="6.125" IsExpanded="true" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
