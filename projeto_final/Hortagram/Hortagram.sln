@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth", "Auth\Auth.csproj", "{948FA8B5-8CA3-4B97-B8AB-93CEE3FFF903}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.csproj", "{7E8274EF-7C13-4C24-A5D9-C3DB06ABACB4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{948FA8B5-8CA3-4B97-B8AB-93CEE3FFF903}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{948FA8B5-8CA3-4B97-B8AB-93CEE3FFF903}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{948FA8B5-8CA3-4B97-B8AB-93CEE3FFF903}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E8274EF-7C13-4C24-A5D9-C3DB06ABACB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E8274EF-7C13-4C24-A5D9-C3DB06ABACB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E8274EF-7C13-4C24-A5D9-C3DB06ABACB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E8274EF-7C13-4C24-A5D9-C3DB06ABACB4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
