@@ -1,0 +1,567 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CURTIDA">
+          <Key>
+            <PropertyRef Name="LIKE_FOTO_ID" />
+            <PropertyRef Name="LIKE_USUARIO_ID" />
+          </Key>
+          <Property Name="LIKE_FOTO_ID" Type="int" Nullable="false" />
+          <Property Name="LIKE_USUARIO_ID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FOTO">
+          <Key>
+            <PropertyRef Name="FOTO_ID" />
+          </Key>
+          <Property Name="FOTO_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="USUARIO_ID" Type="int" Nullable="false" />
+          <Property Name="FOTO_URL" Type="nvarchar" MaxLength="255" />
+          <Property Name="CAPTION" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="RELACIONAMENTO">
+          <Key>
+            <PropertyRef Name="ID_MASTER" />
+            <PropertyRef Name="ID_SLAVE" />
+          </Key>
+          <Property Name="ID_MASTER" Type="int" Nullable="false" />
+          <Property Name="ID_SLAVE" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="USUARIO">
+          <Key>
+            <PropertyRef Name="USUARIO_ID" />
+          </Key>
+          <Property Name="USUARIO_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NOME" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="SOBRENOME" Type="nvarchar" MaxLength="255" />
+          <Property Name="FOTO_URL" Type="nvarchar" MaxLength="255" />
+          <Property Name="EMAIL" Type="nvarchar" MaxLength="255" />
+          <Property Name="TELEFONE" Type="nvarchar" MaxLength="255" />
+          <Property Name="ANIVERSARIO" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <Association Name="FK_CURTIDA_LIKE_FOTO_ID">
+          <End Role="FOTO" Type="Self.FOTO" Multiplicity="1" />
+          <End Role="CURTIDA" Type="Self.CURTIDA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FOTO">
+              <PropertyRef Name="FOTO_ID" />
+            </Principal>
+            <Dependent Role="CURTIDA">
+              <PropertyRef Name="LIKE_FOTO_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FOTO_LIKE_USUARIO_ID">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+          <End Role="CURTIDA" Type="Self.CURTIDA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="USUARIO_ID" />
+            </Principal>
+            <Dependent Role="CURTIDA">
+              <PropertyRef Name="LIKE_USUARIO_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FOTO_USUARIO_ID">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+          <End Role="FOTO" Type="Self.FOTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="USUARIO_ID" />
+            </Principal>
+            <Dependent Role="FOTO">
+              <PropertyRef Name="USUARIO_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RELACIONAMENTO_MASTER_USUARIO_ID">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+          <End Role="RELACIONAMENTO" Type="Self.RELACIONAMENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="USUARIO_ID" />
+            </Principal>
+            <Dependent Role="RELACIONAMENTO">
+              <PropertyRef Name="ID_MASTER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RELACIONAMENTO_SLAVE_USUARIO_ID">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+          <End Role="RELACIONAMENTO" Type="Self.RELACIONAMENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="USUARIO_ID" />
+            </Principal>
+            <Dependent Role="RELACIONAMENTO">
+              <PropertyRef Name="ID_SLAVE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="CreateFoto" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="USUARIO_ID" Type="int" Mode="In" />
+          <Parameter Name="FOTO_URL" Type="nvarchar" Mode="In" />
+          <Parameter Name="CAPTION" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="CreateUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NOME" Type="nvarchar" Mode="In" />
+          <Parameter Name="SOBRENOME" Type="nvarchar" Mode="In" />
+          <Parameter Name="FOTO_URL" Type="nvarchar" Mode="In" />
+          <Parameter Name="EMAIL" Type="nvarchar" Mode="In" />
+          <Parameter Name="TELEFONE" Type="nvarchar" Mode="In" />
+          <Parameter Name="ANIVERSARIO" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="Curtir" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FOTO_ID" Type="int" Mode="In" />
+          <Parameter Name="USUARIO_ID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteFoto" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FOTO_ID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="USUARIO_ID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetFoto" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FOTO_ID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetFotos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetFotosAmigos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="USUARIO_ID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetFotosCurtidas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="USUARIO_ID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetFotosUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="USUARIO_ID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="USUARIO_ID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetUsuarios" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="QtdCurtidas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FOTO_ID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="QtsUsuarios" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Seguidores" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="USUARIO_ID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Seguindo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="USUARIO_ID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Seguir" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="USUARIO_ID_MASTER" Type="int" Mode="In" />
+          <Parameter Name="USUARIO_ID_SLAVE" Type="int" Mode="In" />
+        </Function>
+        <Function Name="UpdateFoto" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FOTO_ID" Type="int" Mode="In" />
+          <Parameter Name="USUARIO_ID" Type="int" Mode="In" />
+          <Parameter Name="FOTO_URL" Type="nvarchar" Mode="In" />
+          <Parameter Name="CAPTION" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="UpdateUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="USUARIO_ID" Type="int" Mode="In" />
+          <Parameter Name="NOME" Type="nvarchar" Mode="In" />
+          <Parameter Name="SOBRENOME" Type="nvarchar" Mode="In" />
+          <Parameter Name="FOTO_URL" Type="nvarchar" Mode="In" />
+          <Parameter Name="EMAIL" Type="nvarchar" Mode="In" />
+          <Parameter Name="TELEFONE" Type="nvarchar" Mode="In" />
+          <Parameter Name="ANIVERSARIO" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="CURTIDA" EntityType="Self.CURTIDA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FOTO" EntityType="Self.FOTO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RELACIONAMENTO" EntityType="Self.RELACIONAMENTO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USUARIO" EntityType="Self.USUARIO" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CURTIDA_LIKE_FOTO_ID" Association="Self.FK_CURTIDA_LIKE_FOTO_ID">
+            <End Role="FOTO" EntitySet="FOTO" />
+            <End Role="CURTIDA" EntitySet="CURTIDA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FOTO_LIKE_USUARIO_ID" Association="Self.FK_FOTO_LIKE_USUARIO_ID">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="CURTIDA" EntitySet="CURTIDA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FOTO_USUARIO_ID" Association="Self.FK_FOTO_USUARIO_ID">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="FOTO" EntitySet="FOTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RELACIONAMENTO_MASTER_USUARIO_ID" Association="Self.FK_RELACIONAMENTO_MASTER_USUARIO_ID">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="RELACIONAMENTO" EntitySet="RELACIONAMENTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RELACIONAMENTO_SLAVE_USUARIO_ID" Association="Self.FK_RELACIONAMENTO_SLAVE_USUARIO_ID">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="RELACIONAMENTO" EntitySet="RELACIONAMENTO" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="FOTO">
+          <Key>
+            <PropertyRef Name="FOTO_ID" />
+          </Key>
+          <Property Name="FOTO_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="USUARIO_ID" Type="Int32" Nullable="false" />
+          <Property Name="FOTO_URL" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CAPTION" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="USUARIO" Relationship="Self.FK_FOTO_USUARIO_ID" FromRole="FOTO" ToRole="USUARIO" />
+          <NavigationProperty Name="USUARIO1" Relationship="Self.CURTIDA" FromRole="FOTO" ToRole="USUARIO" />
+        </EntityType>
+        <EntityType Name="USUARIO">
+          <Key>
+            <PropertyRef Name="USUARIO_ID" />
+          </Key>
+          <Property Name="USUARIO_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NOME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SOBRENOME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FOTO_URL" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="EMAIL" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TELEFONE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ANIVERSARIO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="FOTO" Relationship="Self.FK_FOTO_USUARIO_ID" FromRole="USUARIO" ToRole="FOTO" />
+          <NavigationProperty Name="FOTO1" Relationship="Self.CURTIDA" FromRole="USUARIO" ToRole="FOTO" />
+          <NavigationProperty Name="USUARIO1" Relationship="Self.RELACIONAMENTO" FromRole="USUARIO" ToRole="USUARIO1" />
+          <NavigationProperty Name="USUARIO2" Relationship="Self.RELACIONAMENTO" FromRole="USUARIO1" ToRole="USUARIO" />
+        </EntityType>
+        <Association Name="FK_FOTO_USUARIO_ID">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+          <End Role="FOTO" Type="Self.FOTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="USUARIO_ID" />
+            </Principal>
+            <Dependent Role="FOTO">
+              <PropertyRef Name="USUARIO_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CURTIDA">
+          <End Role="FOTO" Type="Self.FOTO" Multiplicity="*" />
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="*" />
+        </Association>
+        <Association Name="RELACIONAMENTO">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="*" />
+          <End Role="USUARIO1" Type="Self.USUARIO" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="FOTO" EntityType="Self.FOTO" />
+          <EntitySet Name="USUARIO" EntityType="Self.USUARIO" />
+          <AssociationSet Name="FK_FOTO_USUARIO_ID" Association="Self.FK_FOTO_USUARIO_ID">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="FOTO" EntitySet="FOTO" />
+          </AssociationSet>
+          <AssociationSet Name="CURTIDA" Association="Self.CURTIDA">
+            <End Role="FOTO" EntitySet="FOTO" />
+            <End Role="USUARIO" EntitySet="USUARIO" />
+          </AssociationSet>
+          <AssociationSet Name="RELACIONAMENTO" Association="Self.RELACIONAMENTO">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="USUARIO1" EntitySet="USUARIO" />
+          </AssociationSet>
+          <FunctionImport Name="CreateFoto">
+            <Parameter Name="USUARIO_ID" Mode="In" Type="Int32" />
+            <Parameter Name="FOTO_URL" Mode="In" Type="String" />
+            <Parameter Name="CAPTION" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="CreateUsuario">
+            <Parameter Name="NOME" Mode="In" Type="String" />
+            <Parameter Name="SOBRENOME" Mode="In" Type="String" />
+            <Parameter Name="FOTO_URL" Mode="In" Type="String" />
+            <Parameter Name="EMAIL" Mode="In" Type="String" />
+            <Parameter Name="TELEFONE" Mode="In" Type="String" />
+            <Parameter Name="ANIVERSARIO" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Curtir">
+            <Parameter Name="FOTO_ID" Mode="In" Type="Int32" />
+            <Parameter Name="USUARIO_ID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteFoto">
+            <Parameter Name="FOTO_ID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteUsuario">
+            <Parameter Name="USUARIO_ID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetFoto" ReturnType="Collection(Model.GetFoto_Result)">
+            <Parameter Name="FOTO_ID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetFotos" ReturnType="Collection(Model.GetFotos_Result)" />
+          <FunctionImport Name="GetFotosAmigos" ReturnType="Collection(Model.GetFotosAmigos_Result)">
+            <Parameter Name="USUARIO_ID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetFotosCurtidas" ReturnType="Collection(Model.GetFotosCurtidas_Result)">
+            <Parameter Name="USUARIO_ID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetFotosUsuario" ReturnType="Collection(Model.GetFotosUsuario_Result)">
+            <Parameter Name="USUARIO_ID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetUsuario" ReturnType="Collection(Model.GetUsuario_Result)">
+            <Parameter Name="USUARIO_ID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetUsuarios" ReturnType="Collection(Model.GetUsuarios_Result)" />
+          <FunctionImport Name="QtdCurtidas" ReturnType="Collection(Int32)">
+            <Parameter Name="FOTO_ID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="QtsUsuarios" ReturnType="Collection(Int32)" />
+          <FunctionImport Name="Seguidores" ReturnType="Collection(Model.Seguidores_Result)">
+            <Parameter Name="USUARIO_ID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Seguindo" ReturnType="Collection(Model.Seguindo_Result)">
+            <Parameter Name="USUARIO_ID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Seguir">
+            <Parameter Name="USUARIO_ID_MASTER" Mode="In" Type="Int32" />
+            <Parameter Name="USUARIO_ID_SLAVE" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateFoto">
+            <Parameter Name="FOTO_ID" Mode="In" Type="Int32" />
+            <Parameter Name="USUARIO_ID" Mode="In" Type="Int32" />
+            <Parameter Name="FOTO_URL" Mode="In" Type="String" />
+            <Parameter Name="CAPTION" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateUsuario">
+            <Parameter Name="USUARIO_ID" Mode="In" Type="Int32" />
+            <Parameter Name="NOME" Mode="In" Type="String" />
+            <Parameter Name="SOBRENOME" Mode="In" Type="String" />
+            <Parameter Name="FOTO_URL" Mode="In" Type="String" />
+            <Parameter Name="EMAIL" Mode="In" Type="String" />
+            <Parameter Name="TELEFONE" Mode="In" Type="String" />
+            <Parameter Name="ANIVERSARIO" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="GetFoto_Result">
+          <Property Type="Int32" Name="FOTO_ID" Nullable="false" />
+          <Property Type="Int32" Name="USUARIO_ID" Nullable="false" />
+          <Property Type="String" Name="FOTO_URL" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="CAPTION" Nullable="true" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="GetFotos_Result">
+          <Property Type="Int32" Name="FOTO_ID" Nullable="false" />
+          <Property Type="Int32" Name="USUARIO_ID" Nullable="false" />
+          <Property Type="String" Name="FOTO_URL" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="CAPTION" Nullable="true" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="GetFotosAmigos_Result">
+          <Property Type="Int32" Name="FOTO_ID" Nullable="false" />
+          <Property Type="String" Name="CAPTION" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="FOTO_URL" Nullable="true" MaxLength="255" />
+          <Property Type="Int32" Name="USUARIO_ID" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GetFotosCurtidas_Result">
+          <Property Type="Int32" Name="FOTO_ID" Nullable="false" />
+          <Property Type="Int32" Name="USUARIO_ID" Nullable="false" />
+          <Property Type="String" Name="FOTO_URL" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="CAPTION" Nullable="true" MaxLength="255" />
+          <Property Type="Int32" Name="LIKE_FOTO_ID" Nullable="false" />
+          <Property Type="Int32" Name="LIKE_USUARIO_ID" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GetFotosUsuario_Result">
+          <Property Type="Int32" Name="FOTO_ID" Nullable="false" />
+          <Property Type="Int32" Name="USUARIO_ID" Nullable="false" />
+          <Property Type="String" Name="FOTO_URL" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="CAPTION" Nullable="true" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="GetUsuario_Result">
+          <Property Type="Int32" Name="USUARIO_ID" Nullable="false" />
+          <Property Type="String" Name="NOME" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="SOBRENOME" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="FOTO_URL" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="EMAIL" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="TELEFONE" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="ANIVERSARIO" Nullable="true" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="GetUsuarios_Result">
+          <Property Type="Int32" Name="USUARIO_ID" Nullable="false" />
+          <Property Type="String" Name="NOME" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="SOBRENOME" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="FOTO_URL" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="EMAIL" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="TELEFONE" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="ANIVERSARIO" Nullable="true" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="Seguidores_Result">
+          <Property Type="Int32" Name="USUARIO_ID" Nullable="false" />
+          <Property Type="Int32" Name="USUARIO_ID1" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="Seguindo_Result">
+          <Property Type="Int32" Name="USUARIO_ID" Nullable="false" />
+          <Property Type="Int32" Name="USUARIO_ID1" Nullable="false" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="FOTO">
+            <EntityTypeMapping TypeName="Model.FOTO">
+              <MappingFragment StoreEntitySet="FOTO">
+                <ScalarProperty Name="FOTO_ID" ColumnName="FOTO_ID" />
+                <ScalarProperty Name="USUARIO_ID" ColumnName="USUARIO_ID" />
+                <ScalarProperty Name="FOTO_URL" ColumnName="FOTO_URL" />
+                <ScalarProperty Name="CAPTION" ColumnName="CAPTION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USUARIO">
+            <EntityTypeMapping TypeName="Model.USUARIO">
+              <MappingFragment StoreEntitySet="USUARIO">
+                <ScalarProperty Name="USUARIO_ID" ColumnName="USUARIO_ID" />
+                <ScalarProperty Name="NOME" ColumnName="NOME" />
+                <ScalarProperty Name="SOBRENOME" ColumnName="SOBRENOME" />
+                <ScalarProperty Name="FOTO_URL" ColumnName="FOTO_URL" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="TELEFONE" ColumnName="TELEFONE" />
+                <ScalarProperty Name="ANIVERSARIO" ColumnName="ANIVERSARIO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="CURTIDA" TypeName="Model.CURTIDA" StoreEntitySet="CURTIDA">
+            <EndProperty Name="FOTO">
+              <ScalarProperty Name="FOTO_ID" ColumnName="LIKE_FOTO_ID" />
+            </EndProperty>
+            <EndProperty Name="USUARIO">
+              <ScalarProperty Name="USUARIO_ID" ColumnName="LIKE_USUARIO_ID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="RELACIONAMENTO" TypeName="Model.RELACIONAMENTO" StoreEntitySet="RELACIONAMENTO">
+            <EndProperty Name="USUARIO">
+              <ScalarProperty Name="USUARIO_ID" ColumnName="ID_MASTER" />
+            </EndProperty>
+            <EndProperty Name="USUARIO1">
+              <ScalarProperty Name="USUARIO_ID" ColumnName="ID_SLAVE" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="CreateFoto" FunctionName="Model.Store.CreateFoto" />
+          <FunctionImportMapping FunctionImportName="CreateUsuario" FunctionName="Model.Store.CreateUsuario" />
+          <FunctionImportMapping FunctionImportName="Curtir" FunctionName="Model.Store.Curtir" />
+          <FunctionImportMapping FunctionImportName="DeleteFoto" FunctionName="Model.Store.DeleteFoto" />
+          <FunctionImportMapping FunctionImportName="DeleteUsuario" FunctionName="Model.Store.DeleteUsuario" />
+          <FunctionImportMapping FunctionImportName="GetFoto" FunctionName="Model.Store.GetFoto">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.GetFoto_Result">
+                <ScalarProperty Name="FOTO_ID" ColumnName="FOTO_ID" />
+                <ScalarProperty Name="USUARIO_ID" ColumnName="USUARIO_ID" />
+                <ScalarProperty Name="FOTO_URL" ColumnName="FOTO_URL" />
+                <ScalarProperty Name="CAPTION" ColumnName="CAPTION" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetFotos" FunctionName="Model.Store.GetFotos">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.GetFotos_Result">
+                <ScalarProperty Name="FOTO_ID" ColumnName="FOTO_ID" />
+                <ScalarProperty Name="USUARIO_ID" ColumnName="USUARIO_ID" />
+                <ScalarProperty Name="FOTO_URL" ColumnName="FOTO_URL" />
+                <ScalarProperty Name="CAPTION" ColumnName="CAPTION" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetFotosAmigos" FunctionName="Model.Store.GetFotosAmigos">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.GetFotosAmigos_Result">
+                <ScalarProperty Name="FOTO_ID" ColumnName="FOTO_ID" />
+                <ScalarProperty Name="CAPTION" ColumnName="CAPTION" />
+                <ScalarProperty Name="FOTO_URL" ColumnName="FOTO_URL" />
+                <ScalarProperty Name="USUARIO_ID" ColumnName="USUARIO_ID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetFotosCurtidas" FunctionName="Model.Store.GetFotosCurtidas">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.GetFotosCurtidas_Result">
+                <ScalarProperty Name="FOTO_ID" ColumnName="FOTO_ID" />
+                <ScalarProperty Name="USUARIO_ID" ColumnName="USUARIO_ID" />
+                <ScalarProperty Name="FOTO_URL" ColumnName="FOTO_URL" />
+                <ScalarProperty Name="CAPTION" ColumnName="CAPTION" />
+                <ScalarProperty Name="LIKE_FOTO_ID" ColumnName="LIKE_FOTO_ID" />
+                <ScalarProperty Name="LIKE_USUARIO_ID" ColumnName="LIKE_USUARIO_ID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetFotosUsuario" FunctionName="Model.Store.GetFotosUsuario">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.GetFotosUsuario_Result">
+                <ScalarProperty Name="FOTO_ID" ColumnName="FOTO_ID" />
+                <ScalarProperty Name="USUARIO_ID" ColumnName="USUARIO_ID" />
+                <ScalarProperty Name="FOTO_URL" ColumnName="FOTO_URL" />
+                <ScalarProperty Name="CAPTION" ColumnName="CAPTION" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetUsuario" FunctionName="Model.Store.GetUsuario">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.GetUsuario_Result">
+                <ScalarProperty Name="USUARIO_ID" ColumnName="USUARIO_ID" />
+                <ScalarProperty Name="NOME" ColumnName="NOME" />
+                <ScalarProperty Name="SOBRENOME" ColumnName="SOBRENOME" />
+                <ScalarProperty Name="FOTO_URL" ColumnName="FOTO_URL" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="TELEFONE" ColumnName="TELEFONE" />
+                <ScalarProperty Name="ANIVERSARIO" ColumnName="ANIVERSARIO" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetUsuarios" FunctionName="Model.Store.GetUsuarios">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.GetUsuarios_Result">
+                <ScalarProperty Name="USUARIO_ID" ColumnName="USUARIO_ID" />
+                <ScalarProperty Name="NOME" ColumnName="NOME" />
+                <ScalarProperty Name="SOBRENOME" ColumnName="SOBRENOME" />
+                <ScalarProperty Name="FOTO_URL" ColumnName="FOTO_URL" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="TELEFONE" ColumnName="TELEFONE" />
+                <ScalarProperty Name="ANIVERSARIO" ColumnName="ANIVERSARIO" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="QtdCurtidas" FunctionName="Model.Store.QtdCurtidas" />
+          <FunctionImportMapping FunctionImportName="QtsUsuarios" FunctionName="Model.Store.QtsUsuarios" />
+          <FunctionImportMapping FunctionImportName="Seguidores" FunctionName="Model.Store.Seguidores">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.Seguidores_Result">
+                <ScalarProperty Name="USUARIO_ID" ColumnName="USUARIO_ID" />
+                <ScalarProperty Name="USUARIO_ID1" ColumnName="USUARIO_ID1" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Seguindo" FunctionName="Model.Store.Seguindo">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.Seguindo_Result">
+                <ScalarProperty Name="USUARIO_ID" ColumnName="USUARIO_ID" />
+                <ScalarProperty Name="USUARIO_ID1" ColumnName="USUARIO_ID1" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Seguir" FunctionName="Model.Store.Seguir" />
+          <FunctionImportMapping FunctionImportName="UpdateFoto" FunctionName="Model.Store.UpdateFoto" />
+          <FunctionImportMapping FunctionImportName="UpdateUsuario" FunctionName="Model.Store.UpdateUsuario" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
