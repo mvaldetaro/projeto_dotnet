@@ -181,7 +181,8 @@ namespace Service.Models
             var uSUARIO_IDParameter = uSUARIO_ID.HasValue ?
                 new ObjectParameter("USUARIO_ID", uSUARIO_ID) :
                 new ObjectParameter("USUARIO_ID", typeof(int));
-    
+
+            //return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Seguidores_Result>("Seguidores", uSUARIO_IDParameter);
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Seguidores_Result>("Seguidores", uSUARIO_IDParameter);
         }
     
