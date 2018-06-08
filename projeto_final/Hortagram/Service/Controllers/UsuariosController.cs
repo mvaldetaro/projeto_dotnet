@@ -13,7 +13,7 @@ using Service.Models;
 
 namespace Service.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class UsuariosController : ApiController
     {
         private Entities db = new Entities();
