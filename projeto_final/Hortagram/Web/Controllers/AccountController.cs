@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Web.Models;
 using Web.Business;
+using System.Net.Http.Headers;
 
 namespace Web.Controllers
 {
@@ -20,7 +21,7 @@ namespace Web.Controllers
             return View();
         }
 
-        // POST: Account/Login
+        // POST: Account/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
@@ -35,7 +36,31 @@ namespace Web.Controllers
 
                     if (response.IsSuccessStatusCode)
                     {
-                        return RedirectToAction("Login");
+
+                        //REGISTRAR NO SERVICE
+
+                        var c = new HttpClient();
+                        c.BaseAddress = new Uri(Const.ServiceUrl);
+
+                        UsuarioViewModel newUser = new UsuarioViewModel();
+
+                        string[] nome = model.Email.Split(new string[] { "@" }, StringSplitOptions.None);
+
+                        newUser.NOME = nome[0];
+                        newUser.EMAIL = model.Email;
+
+                        var res = await c.PostAsJsonAsync("api/Usuarios", newUser);
+
+                        if (res.IsSuccessStatusCode)
+                        {
+                            return RedirectToAction("Login");
+
+                        }
+                        else
+                        {
+                            return View("Error");
+                        }
+
                     }
                     else
                     {
@@ -58,7 +83,7 @@ namespace Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var data = new Dictionary<string, string>
                 {
@@ -79,11 +104,12 @@ namespace Web.Controllers
                         {
                             var responseContent = await response.Content.ReadAsStringAsync();
 
-                            var tokenData = JObject.Parse(responseContent);
+                            var resData = JObject.Parse(responseContent);
 
-                            Session.Add("access_token", tokenData["access_token"]);
+                            Session.Add("access_token", resData["access_token"]);
+                            Session.Add("userName", resData["userName"]);
 
-                            return RedirectToAction("Index", "Home");
+                            return RedirectToAction("Index", "Timeline");
                         }
 
                         return View("ERROR");
@@ -92,6 +118,43 @@ namespace Web.Controllers
             }
             return View();
         }
-     
+
+
+
+        // POST: Account/Logout
+        public async Task<ActionResult> Logout()
+        {
+            string access_token = Session["access_token"]?.ToString();
+
+            if (!string.IsNullOrEmpty(access_token))
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(Const.AuthUrl);
+                    client.DefaultRequestHeaders.Accept.Clear();
+
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{access_token}");
+
+
+                    HttpContent content = null;
+
+
+                    var response = await client.PostAsync("api/Account/Logout", content);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        Session.Clear();
+                        return RedirectToAction("Login", "Account");
+                    }
+
+                    return View("ERROR");
+
+                }
+            }
+
+            return View("ERROR");
+
+        }
+
     }
 }

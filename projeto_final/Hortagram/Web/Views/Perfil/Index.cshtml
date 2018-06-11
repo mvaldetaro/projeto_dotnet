@@ -1,0 +1,47 @@
+﻿@model Web.Models.UsuarioViewModel
+
+@{
+    ViewBag.Title = "Perfil";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+
+<div class="row">
+    <div class="col-md-12 clearfix">
+        <img src="@Html.DisplayFor(model => model.FOTO_URL)" alt="@ViewBag.FullName" class="img-responsive img-circle" style="float:left; margin-right: 16px; width: 120px; height: 120px;" />
+
+        <div style="float:left">
+            <div>
+                <h4>@ViewBag.FullName</h4>
+                <p>@Html.DisplayFor(model => model.EMAIL)</p>
+            </div>
+            <div>
+                <p><b>@Model.FOTO.Count</b> publicações | <b>@Model.USUARIO2.Count</b> seguidores | seguindo <b>@Model.USUARIO1.Count</b></p>
+                <p>@Html.ActionLink("Editar Perfil", "Edit", new { id = Model.USUARIO_ID }, new { @class = "btn btn-primary btn-xs" })</p>
+            </div>
+        </div>
+
+    </div>
+    <hr />
+</div>
+
+
+<div class="row clearfix">
+    @foreach (var img in Model.FOTO)
+    {
+        <div class="col-md-4">
+            <div style="height: 200px; overflow:hidden; text-align: center; margin-bottom: 32px;">
+                <img src="@img.FOTO_URL" alt="@img.CAPTION" class="img-responsive" />
+            </div>
+        </div>    
+    }
+
+
+
+
+</div>
+
+<p>
+    @Html.ActionLink("Voltar para Timeline", "Index", "Timeline")
+</p>

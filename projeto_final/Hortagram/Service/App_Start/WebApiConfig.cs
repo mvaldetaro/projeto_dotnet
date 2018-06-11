@@ -17,6 +17,8 @@ namespace Service
             config.SuppressDefaultHostAuthentication();
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
 
+            config.EnableCors();
+
             // Rotas de API Web
             config.MapHttpAttributeRoutes();
 

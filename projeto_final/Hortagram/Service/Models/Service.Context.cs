@@ -14,7 +14,8 @@ namespace Service.Models
     using System.Data.Entity.Infrastructure;
     using System.Data.Entity.Core.Objects;
     using System.Linq;
-    
+    using System.Data.SqlClient;
+
     public partial class Entities : DbContext
     {
         public Entities()
@@ -85,8 +86,20 @@ namespace Service.Models
             var uSUARIO_IDParameter = uSUARIO_ID.HasValue ?
                 new ObjectParameter("USUARIO_ID", uSUARIO_ID) :
                 new ObjectParameter("USUARIO_ID", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Curtir", fOTO_IDParameter, uSUARIO_IDParameter);
+
+            try
+            {
+                return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Curtir", fOTO_IDParameter, uSUARIO_IDParameter);
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException is SqlException) {
+                    return -1;
+                }
+                else { throw; }
+            }
+
+            
         }
     
         public virtual int DeleteFoto(Nullable<int> fOTO_ID)
@@ -182,7 +195,6 @@ namespace Service.Models
                 new ObjectParameter("USUARIO_ID", uSUARIO_ID) :
                 new ObjectParameter("USUARIO_ID", typeof(int));
 
-            //return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Seguidores_Result>("Seguidores", uSUARIO_IDParameter);
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Seguidores_Result>("Seguidores", uSUARIO_IDParameter);
         }
     
@@ -204,8 +216,23 @@ namespace Service.Models
             var uSUARIO_ID_SLAVEParameter = uSUARIO_ID_SLAVE.HasValue ?
                 new ObjectParameter("USUARIO_ID_SLAVE", uSUARIO_ID_SLAVE) :
                 new ObjectParameter("USUARIO_ID_SLAVE", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Seguir", uSUARIO_ID_MASTERParameter, uSUARIO_ID_SLAVEParameter);
+
+
+            try
+            {
+                return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Seguir", uSUARIO_ID_MASTERParameter, uSUARIO_ID_SLAVEParameter);
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException is SqlException)
+                {
+                    return -1;
+                }
+                else { throw; }
+            }
+
+
+            
         }
     
         public virtual int UpdateFoto(Nullable<int> fOTO_ID, Nullable<int> uSUARIO_ID, string fOTO_URL, string cAPTION)

@@ -1,0 +1,236 @@
+﻿@model Web.Models.TimelineViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row">
+    <br />
+    <main class="col-md-8">
+
+        @foreach (var item in Model.FotosAmigos) {
+            <section class="photo" style="margin-bottom: 60px; border: 1px solid #e6e6e6; border-radius: 3px;">
+                <header class="row" style="margin: 8px 16px;">
+
+
+                    @if (item.USUARIO.FOTO_URL == null)
+                    {
+                    <text>
+                        <img src="https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg" class="img-responsive img-circle" style="width:30px; height: 30px; float: left;" alt="Foto @item.USUARIO.NOME" />
+                    </text>
+                    }
+                    else
+                    {
+                    <text>
+                        <img src="@item.USUARIO.FOTO_URL" class="img-responsive img-circle" style="width:30px; height: 30px; float: left;" alt="Foto @item.USUARIO.NOME" />
+                    </text>
+                    }
+
+                    <div style="height: 30px; float: left; margin-left:8px;">
+                        <h6><b>@item.USUARIO.NOME @item.USUARIO.SOBRENOME</b></h6>
+                    </div>
+                </header>
+                <figure>
+                    
+                    <img src="@item.FOTO_URL" class="img-responsive">
+                    
+                    <div style="padding: 16px; position: relative;">
+
+
+                        @{bool liked = false;}
+
+                        @foreach (var u in item.USUARIO1)
+                        {
+                            if (u.USUARIO_ID == ViewBag.Uid)
+                            {
+                                liked = true;
+                            }
+                        }
+
+                        @if (liked == true)
+                        {
+                            <div class="fake-heart" style="position: absolute; top: 0; left: -4px;"></div>
+                        }
+                        else
+                        {
+                            <div class="heart" style="position: absolute; top: 0; left: -4px;" data-url="@ViewBag.Url" data-fotoid="@item.FOTO_ID" data-uid="@ViewBag.Uid"></div>
+                        }
+
+                        <div class="fake-heart" style="position: absolute; top: 0; left: -4px; visibility:hidden; display: none;"></div>
+
+                    <b style="display: inline-block; margin-left: 26px;">
+                        <span id="qtd" data-qtd=@item.USUARIO1.Count>@item.USUARIO1.Count</span> curtidas
+                    </b>
+
+                    </div>
+                    
+                    <div style="padding: 0 16px;">
+
+                        @foreach (var u in item.USUARIO1)
+                            {
+                            <b> @(u.NOME + ", ") </b>  
+                            }
+                        
+                        @if (item.USUARIO1.Count == 1)
+                        {
+                            <text>curtiu isso</text>
+                        } else if(item.USUARIO1.Count > 1) {
+                            <text>curtiram isso</text>
+                        }
+
+                    </div>
+
+                    <hr />
+                    
+                    <figcaption style="padding: 0 16px 16px 16px;">
+                        @item.CAPTION
+                    </figcaption>
+
+                </figure>
+            </section>
+         }
+    </main>
+
+
+
+    <aside class="col-md-4">
+        <div class="row">
+            <div class="col-md-12">
+                <img src="@Html.DisplayFor(model => model.Usuario.FOTO_URL)" class="img-responsive img-circle" style="width:60px; height: 60px; float: left;" alt="Foto @Html.DisplayFor(model => model.Usuario.NOME)" />
+                <div style="height: 60px; float: left; margin-left:8px;">
+
+                    <h6><b><a href="/Perfil/Index">@Html.DisplayFor(model => model.Usuario.NOME) @Html.DisplayFor(model => model.Usuario.SOBRENOME)</a></b></h6>
+                    <span>@Session["userName"]</span>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                <a href="/Foto/Create" class="btn btn-block btn-primary"><i class="far fa-image"></i>  Publicar</a>
+            </div>
+            <br />
+            <div class="col-md-12">
+                <a href="/Usuarios/Index" class="btn btn-block btn-primary"><i class="far fa-compass"></i>  Encontrar Pessoas</a>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                <h5><b>Miguxos</b></h5>
+                @foreach (var item in Model.Seguindo)
+            {
+
+                if (item.FOTO_URL == null)
+                {
+                    <text>
+                        <img src="https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg" class="img-responsive img-circle" style="width:60px; height: 60px; float: left; margin: 4px; padding: 2px; border:2px solid #E96D08;" alt="Foto @item.NOME" />
+                    </text>
+            }
+            else
+            {
+                <text>
+                        <a href="/Perfil/Friend/@item.USUARIO_ID">
+                            <img src="@item.FOTO_URL" class="img-responsive img-circle" style="width:60px; height: 60px; float: left; margin: 4px; padding: 2px; border:2px solid #E96D08;" alt="Foto @item.NOME" />
+                        </a>
+                </text>
+        }
+
+    }
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                <h5><b>Stalkers</b></h5>
+
+                @foreach (var item in Model.Seguidores)
+    {
+
+        if (item.FOTO_URL == null)
+        {
+            <text>
+                <img src="https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg" class="img-responsive img-circle" style="width:60px; height: 60px; float: left; margin: 4px; padding: 2px; border:2px solid #E96D08;" alt="Foto @item.NOME" />
+            </text>
+}
+else
+{
+            <text>
+                <a href="/Perfil/Friend/@item.USUARIO_ID">
+                    <img src="@item.FOTO_URL" class="img-responsive img-circle" style="width:60px; height: 60px; float: left; padding: 2px; border:2px solid #E96D08;" alt="Foto @item.NOME" />
+                </a>
+            </text>
+}
+}
+            </div>
+        </div>
+
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                @Html.ActionLink("Logout", "Logout", "Account", new { }, new { @class = "btn btn-link" })
+            </div>
+        </div>
+    </aside>
+</div>
+
+<script>
+
+    //var qtd = $("#qtd");
+    
+    
+
+    $(".heart").on('click touchstart', function(){
+        $(this).toggleClass('is_animating');
+    });
+
+    $(".heart").on('animationend', function () {
+
+        var fotoId = $(this)[0].dataset.fotoid;
+        var uid = $(this)[0].dataset.uid;
+        var url = $(this)[0].dataset.url;
+
+        var qtd = $(this)[0].parentNode.querySelector('#qtd');
+        var fake = $(this)[0].parentNode.querySelector('.fake-heart');
+
+        console.log(qtd);
+        //fake-heart
+
+        var qtdCurtidas = parseInt(qtd.dataset.qtd);
+        console.log(qtdCurtidas);
+        
+        var request = url + "api/Like?fotoid=" + fotoId + "&uid=" + uid
+
+        var self = $(this)[0];
+
+        $.ajax({
+            method: "POST",
+            url: request,
+            crossDomain: true,
+            headers: {
+                "Access-Control-Allow-Origin": "*"
+            },
+            success: function (response) {
+                qtd.textContent = qtdCurtidas + 1;
+                self.remove();
+                fake.style.display = "block";
+                fake.style.visibility = "visible";
+            },
+            failure: function (response) {
+                console.log(response.responseText);
+            },
+            error: function (response) {
+                console.log(response.responseText);
+            }
+        });
+
+      $(this).toggleClass('is_animating');
+    });
+</script>
+
+
+
+
+

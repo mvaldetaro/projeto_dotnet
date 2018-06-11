@@ -1,0 +1,98 @@
+﻿@model IEnumerable<Web.Models.UsuarioViewModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2><i class="far fa-compass"></i> Explorer</h2>
+@Html.ActionLink("Voltar", "Index", "Timeline")
+<hr />
+<!--<p>
+    @Html.ActionLink("Create New", "Create")
+</p>-->
+
+
+
+@foreach (var item in Model)
+{
+
+    <div class="col-md-4">
+
+        <div class="thumbnail" style="margin-bottom:16px; padding: 16px 0">
+            <img src="@item.FOTO_URL" alt="@item.NOME @item.SOBRENOME" style="width: 100px; height: 100px;" class="img-responsive img-circle" />
+
+            <div class="caption">
+                <p class="text-center"><b>@item.NOME @item.SOBRENOME</b></p>
+                
+                
+                @{bool follow = false;}
+
+                @foreach (var u in item.USUARIO2)
+                {
+
+                    if(u.USUARIO_ID == @ViewBag.Uid)
+                    {
+                        follow = true;
+                    }
+                }
+
+                @if(follow == true)
+                {
+                    <a href="javascript:;" class="btn btn-block btn-info">Seguindo</a> 
+                } else { 
+                    <a href="javascript:;" class="btn-seguir btn btn-block btn-primary" data-url="@ViewBag.Url" data-uidm="@ViewBag.Uid" data-uids="@item.USUARIO_ID">Seguir</a>
+                }
+                
+                <p><a href="/Perfil/Friend/@item.USUARIO_ID" class="btn btn-block btn-link">Visitar Perfil</a></p>
+            </div>
+        </div>
+
+
+    </div>
+
+}
+
+<div class="clearfix"></div>
+
+<script type="text/javascript">
+
+
+    $(".btn-seguir").click(function () {
+
+        var url = this.dataset.url;
+        var uidm = this.dataset.uidm;
+        var uids = this.dataset.uids;
+
+        var apiUrl = url + "api/Follow?uidm=" + uidm + "&uids=" + uids;
+        var self = this;
+        
+        $.ajax({
+            method: "POST",
+            url: apiUrl,
+            crossDomain: true,
+            headers: {
+                "Access-Control-Allow-Origin": "*"
+            },
+            success: function (response) {
+                console.log("sucesso!");
+                console.log(self);
+
+                self.setAttribute('onclick', 'javascript: void();');
+                self.classList.remove("btn-seguir");
+                self.classList.remove("btn-primary");
+                self.classList.add("btn-info");
+                self.textContent = "Seguindo";
+                
+            },
+            failure: function (response) {
+                console.log(response.responseText);
+            },
+            error: function (response) {
+                console.log(response.responseText);
+            }
+        });
+        
+    });
+     
+</script>
